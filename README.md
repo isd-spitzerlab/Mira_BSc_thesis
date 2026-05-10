@@ -88,10 +88,35 @@ python overlap_dge.py \
 --anndata_file path_to_anndata_file_with_consensus_based_EC_annotation\
 --out
 ```
-## Analyses within glmm_env environment (R)
+## Set Up of the glmm_env environment (R)
 
 ```bash
 conda env create -f glmm_env.yaml
 conda activate glmm_env
 ```
 
+## Analyses within the glmm_env environment
+
+Compute statistical analysis of baseline age to determine significant differences in cell type abundance between niches
+
+```bash
+Rscript EC_niches_glmm_Min_niches.R --infile csv_with_niche_results --outdir path_to_out_dir
+```
+
+To generate summary heatmap of significant results run:
+
+```bash
+Rscript summary_heatmaps_min_niches.R \
+  --input results_of_glmm/Pairwise_contrasts_FDR_within_area_radius_celltype_with_effect_sizes.csv \
+  --output outdir_path/heatmap_name.pdf
+```
+
+For the statistical analysis of age vs 3 months baseline group run:
+
+```bash
+Rscript all_ages_ec_niches_glmm_filters.R \
+  --infile path_to_niches \
+  --outdir path_to_out_dir
+```
+
+The End
