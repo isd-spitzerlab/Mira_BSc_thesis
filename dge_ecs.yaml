@@ -1,0 +1,21 @@
+name: dge_ecs
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - conda[version='>=24.11.3']
+  - mamba[version='>=1.5.12']
+  - pip=25.2
+  - pip:
+      - adjustText
+      - anndata==0.12.3
+      - matplotlib==3.10.7
+      - matplotlib-inline==0.1.7
+      - matplotlib-scalebar==0.9.0
+      - numpy==2.3.5
+      - pandas==2.3.3
+      - pydeseq2==0.5.4
+      - scanpy==1.11.5
+      - scipy==1.16.2
+      - squidpy==1.6.5
+prefix: /home/ubuntu/miniforge3
