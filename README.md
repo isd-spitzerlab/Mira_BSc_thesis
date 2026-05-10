@@ -9,7 +9,7 @@ conda env create -f ec_niches.yaml
 conda activate ec_niches
 ```
 
-## Analyses within the ec_niche environment
+## Analyses within the ec_niches environment
 
 To visualise brain area annotation on the slide level run: 
 
