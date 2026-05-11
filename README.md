@@ -5,7 +5,7 @@ Scripts that were used to generate the analyses and plots described in my BSc th
 ## set up ec_niches environment (python)
 
 ```bash
-conda env create -f ec_niches.yaml
+conda env create --file="path_to_ec_niches.yaml"
 conda activate ec_niches
 ```
 
