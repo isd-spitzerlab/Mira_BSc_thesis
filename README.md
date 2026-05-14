@@ -29,10 +29,10 @@ python brain_cell_numbers.py \
   --out
 ```
 
-To compute ec niches at baseline:
+To compute ec niches at baseline and EC - mural cell distance:
 
 ```bash
-python mixed_effect.py \
+python ec_niche_computation.py \
   --anndata_file \
   --brain_areas \
   --out
@@ -54,6 +54,19 @@ python SMC_EC_classification.py /
 --anndata_file \
 --out
 ```
+
+To calculate the percentage of mural cell positive niches and number of total niches run:
+
+```bash
+python calculate_mural_positive_niches.py/
+--anndata_file adata_integrated.h5ad.gz \
+--brain_areas spatial_registration.csv \
+--out results \
+--plot_brain_areas HIP \
+--radii 60,70,80,90,100 \
+--mural_cell_types SMCs,Pericytes
+```
+
 Script for generating the anndata objects required for distance - and overlap-based EC sub type annotation
 
 ```bash
