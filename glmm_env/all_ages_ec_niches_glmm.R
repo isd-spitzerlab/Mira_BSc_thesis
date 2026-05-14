@@ -62,7 +62,7 @@ if (is.na(infile) || is.na(outdir)) {
 }
 if (!file.exists(infile)) stop("Input file does not exist: ", infile)
 
-# optional parameters
+# parameters
 min_rows_per_fit      <- as.integer(args$min_rows %||% 30)
 bracket_alpha         <- as.numeric(args$bracket_alpha %||% 0.05)
 facet_ncol            <- as.integer(args$facet_ncol %||% 4)
@@ -77,7 +77,7 @@ baseline_age          <- suppressWarnings(as.numeric(args$baseline_age %||% 3))
 bracket_lane_step     <- as.numeric(args$bracket_lane_step %||% 0.25)
 bracket_base_pad      <- as.numeric(args$bracket_base_pad %||% 0.20)
 
-# BH-FDR grouping
+
 fdr_grouping <- c("brain_area", "radius")
 
 dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
@@ -100,7 +100,7 @@ message(
 
 Sys.setenv(OMP_NUM_THREADS = "1", MKL_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1")
 
-#load and prep data
+#statistical analysis by glmm to compare cell type abundance between niches with brain area
 df_all <- read.csv(infile)
 
 required_cols <- c(
@@ -118,7 +118,7 @@ df_all$brain_area  <- as.factor(df_all$brain_area)
 df_all$EC_cell_ID  <- as.factor(df_all$EC_cell_ID)
 df_all$cell_count  <- as.integer(df_all$cell_count)
 
-# keep age numeric for baseline comparisons; factor version for model/emmeans
+
 df_all$age_months_num <- suppressWarnings(as.numeric(as.character(df_all$age_months)))
 if (any(is.na(df_all$age_months_num))) {
   stop("Could not coerce age_months to numeric for all rows.")
@@ -232,7 +232,7 @@ assign_lanes <- function(xmin, xmax) {
   lane
 }
 
-# fit one brain_area x radius x cell_type subset
+# fit one model per brain_area x radius x cell_type subset
 # biological contrast: age vs baseline = 3 months within each EC subtype
 fit_one <- function(dat, tag) {
   if (nrow(dat) < min_rows_per_fit) {
@@ -333,7 +333,7 @@ fit_one <- function(dat, tag) {
 }
 
 
-#FIT ALL SUBSETS
+#Fit all niches
 
 radii <- levels(df_all$radius)
 celltypes <- levels(df_all$cell_type)
@@ -514,7 +514,7 @@ write.csv(
   row.names = FALSE
 )
 
-#Plots of samples means for significant results only
+#Plots of samples means for significant results only to determine cell number in EC niches
 # ----------------------------
 if (nrow(con_sig) > 0) {
   sig_subsets <- con_sig %>%

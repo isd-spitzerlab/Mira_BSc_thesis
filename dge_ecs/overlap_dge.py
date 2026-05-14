@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
-import argparse
+
 import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
+import argparse
 from pathlib import Path
 import anndata as ad
 import matplotlib
@@ -16,8 +20,7 @@ from matplotlib.lines import Line2D
 from pydeseq2.dds import DeseqDataSet
 from pydeseq2.ds import DeseqStats
 
-warnings.filterwarnings("ignore", category=FutureWarning)
-warnings.filterwarnings("ignore", category=UserWarning)
+
 
 SELECTED_EC_MARKER_GENES = {
     "aEC": [

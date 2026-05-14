@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 
 """
-Calculate and plot the percentage of EC niches that are positive for selected
-mural cell types, following the logic from numb_erpc_niches.ipynb.
+Calculates and plots the percentage of EC niches that are positive for SMCs and pericytes, as well as total number of EC niches
 
 Example:
     python calculate_mural_positive_niches.py \
@@ -44,13 +43,13 @@ EC_SUBTYPES = {
 }
 
 
-def parse_comma_list(value, dtype=str):
+def parse_input_lists(value, dtype=str):
     if value is None or str(value).strip().lower() in {"", "none"}:
         return []
     return [dtype(x.strip()) for x in str(value).split(",") if x.strip()]
 
 
-def safe_file_name(value):
+def edit_file_name_for_saving(value):
     return str(value).replace("/", "_").replace(" ", "_").replace("-", "_")
 
 
@@ -170,7 +169,7 @@ def calculate_ec_niches(
     return ec_niches
 
 
-def build_niches_long(adata, radii, celltype_col, age_col, age):
+def build_niches_df_long(adata, radii, celltype_col, age_col, age):
     areas = adata.obs["brain_area"].dropna().unique()
     all_niches = []
 
@@ -215,9 +214,6 @@ def build_niches_long(adata, radii, celltype_col, age_col, age):
             ec_niches["radius"] = radius
             all_niches.append(ec_niches)
 
-    if not all_niches:
-        raise RuntimeError("No EC niches were created. Check cell types, brain areas, age, and radii.")
-
     final_niches_df = pd.concat(all_niches, axis=0, ignore_index=True)
     print("Final dataframe shape:", final_niches_df.shape)
 
@@ -247,7 +243,7 @@ def build_niches_long(adata, radii, celltype_col, age_col, age):
     return final_niches_df, final_niches_df_long
 
 
-def summarize_target_niches(
+def summarize_mural_cell_abundance(
     df_in,
     target_label,
     group_cols=("EC_subtypes", "brain_area", "radius"),
@@ -281,9 +277,6 @@ def summarize_target_niches(
         .fillna(0)
     )
 
-    if summary.empty:
-        return summary
-
     summary[f"{label_prefix}_0"] = summary[f"{label_prefix}_0"].astype(int)
     summary[f"{label_prefix}_ge1"] = summary[f"{label_prefix}_ge1"].astype(int)
 
@@ -306,7 +299,7 @@ def summarize_target_niches(
     return summary.sort_values(list(group_cols)).reset_index(drop=True)
 
 
-def plot_target_niches(summary_df, label_prefix, zero_label, ge1_label, out_file):
+def plot_niches(summary_df, label_prefix, zero_label, ge1_label, out_file):
     if summary_df.empty:
         print(f"No data available to plot for {label_prefix}.")
         return
@@ -429,13 +422,13 @@ def run_mural_niche_analysis(
             print(f"No data found for mural cell type {mural_cell_type} in requested brain area(s).")
             continue
 
-        label_prefix = safe_file_name(mural_cell_type).lower()
+        label_prefix = edit_file_name_for_saving(mural_cell_type).lower()
         if mural_cell_type.lower() == "pericytes":
             label_prefix = "pericyte"
         elif mural_cell_type.lower() == "smcs":
             label_prefix = "smc"
 
-        summary = summarize_target_niches(
+        summary = summarize_mural_cell_abundance(
             target_df,
             target_label=mural_cell_type,
             label_prefix=label_prefix,
@@ -446,7 +439,7 @@ def run_mural_niche_analysis(
 
         summary.to_csv(summary_file, index=False)
 
-        plot_target_niches(
+        plot_niches(
             summary,
             label_prefix=label_prefix,
             zero_label="zero",
@@ -520,10 +513,10 @@ def main():
 
     sc.settings.figdir = fig_dir
 
-    radii = parse_comma_list(args.radii, dtype=int)
-    plot_brain_areas = parse_comma_list(args.plot_brain_areas, dtype=str)
-    mural_cell_types = parse_comma_list(args.mural_cell_types, dtype=str)
-    exclude_brain_areas = parse_comma_list(args.exclude_brain_areas, dtype=str)
+    radii = parse_input_lists(args.radii, dtype=int)
+    plot_brain_areas = parse_input_lists(args.plot_brain_areas, dtype=str)
+    mural_cell_types = parse_input_lists(args.mural_cell_types, dtype=str)
+    exclude_brain_areas = parse_input_lists(args.exclude_brain_areas, dtype=str)
     age = None if str(args.age).strip().lower() == "none" else float(args.age)
 
     print("Loading AnnData...")
@@ -550,7 +543,7 @@ def main():
     print(adata_integrated.obs["brain_area"].value_counts())
 
     print("\nBuilding EC niche table...")
-    final_niches_df, final_niches_df_long = build_niches_long(
+    final_niches_df, final_niches_df_long = build_niches_df_long(
         adata_integrated,
         radii=radii,
         celltype_col=args.cell_types,

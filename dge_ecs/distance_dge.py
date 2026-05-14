@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 
-import argparse
+"""
+script to compute differential transcript expression in EC subtypes that have been annotated based on distance to mural cells
+"""
+
 import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
+import argparse
 from pathlib import Path
 import anndata as ad
 import matplotlib
@@ -16,8 +23,7 @@ from matplotlib.lines import Line2D
 from pydeseq2.dds import DeseqDataSet
 from pydeseq2.ds import DeseqStats
 
-warnings.filterwarnings("ignore", category=FutureWarning)
-warnings.filterwarnings("ignore", category=UserWarning)
+
 
 SELECTED_EC_MARKER_GENES = {
     "aEC": [
@@ -34,7 +40,7 @@ SELECTED_EC_MARKER_GENES = {
     ],
 }
 
-EC_MARKER_GENES_FOR_VOLCANO = {
+EC_MARKER_GENES_FOR_PLOTTING = {
     **SELECTED_EC_MARKER_GENES,
     "EC": ["Kdr", "Mfsd2a", "Slc40a1", "Nostrin", "Itm2a", "Pde3a", "Rad54b"],
 }
@@ -606,7 +612,7 @@ def main():
                 lfc_thr=1.0,
                 padj_thr=0.1,
                 n_label_each_side=20,
-                ec_markers=EC_MARKER_GENES_FOR_VOLCANO,
+                ec_markers=EC_MARKER_GENES_FOR_PLOTTING,
                 contamination=CONTAMINATION_GENES,
                 outpath=str(fig_dir / f"{contrast_name}_labelled_volcano.pdf"),
             )

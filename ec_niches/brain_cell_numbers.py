@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import warnings
-import dask
-dask.config.set({"dataframe.query-planning": True})
-
 warnings.filterwarnings("ignore", category=FutureWarning, module="dask.dataframe")
 warnings.filterwarnings("ignore", category=UserWarning, module="xarray_schema")
 warnings.filterwarnings("ignore", category=FutureWarning, module="squidpy")
 warnings.filterwarnings("ignore", category=FutureWarning, module="anndata")
+
+import dask
+dask.config.set({"dataframe.query-planning": True})
 
 import anndata as ad
 import squidpy as sq

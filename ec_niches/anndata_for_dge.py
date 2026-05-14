@@ -2,7 +2,6 @@
 
 import argparse
 import os
-
 import anndata as ad
 import numpy as np
 import pandas as pd
@@ -118,7 +117,7 @@ def annotate_smc(
     return adata
 
 
-def annotate_ec_subtypes_mural(
+def annotate_ec_subtypes_distance(
     adata,
     celltype_col="cell_type_incl_low_quality_revised",
     spatial_key="spatial_microns",
@@ -355,7 +354,7 @@ def main():
         celltype_col=args.celltype_col,
     )
 
-    adata_distance_only = annotate_ec_subtypes_mural(
+    adata_distance_only = annotate_ec_subtypes_distance(
         adata_base.copy(),
         celltype_col=args.celltype_col,
         spatial_key=args.spatial_key,

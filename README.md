@@ -100,13 +100,13 @@ conda activate glmm_env
 Compute statistical analysis of baseline age to determine significant differences in cell type abundance between niches
 
 ```bash
-Rscript EC_niches_glmm_Min_niches.R --infile csv_with_niche_results --outdir path_to_out_dir
+Rscript EC_niches_glmm.R --infile csv_with_niche_results --outdir path_to_out_dir
 ```
 
 To generate summary heatmap of significant results run:
 
 ```bash
-Rscript summary_heatmaps_min_niches.R \
+Rscript summary_heatmaps.R \
   --input results_of_glmm/Pairwise_contrasts_FDR_within_area_radius_celltype_with_effect_sizes.csv \
   --output outdir_path/heatmap_name.pdf
 ```
@@ -114,7 +114,7 @@ Rscript summary_heatmaps_min_niches.R \
 For the statistical analysis of age vs 3 months baseline group run:
 
 ```bash
-Rscript all_ages_ec_niches_glmm_filters.R \
+Rscript all_ages_ec_niches_glmm.R \
   --infile path_to_niches \
   --outdir path_to_out_dir
 ```

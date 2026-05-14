@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+
+"""
+
 import dask
 dask.config.set({"dataframe.query-planning": True})
 
@@ -344,7 +348,7 @@ def build_niches(
     return final_niches_df
 
 
-def make_long_table(final_niches_df, adata, celltype_col):
+def compute_niches_df_long(final_niches_df, adata, celltype_col):
     cell_types = list(adata.obs[celltype_col].astype("category").cat.categories)
 
     rename_map = {
@@ -477,7 +481,7 @@ def main():
 
     print("Final wide dataframe shape:", final_niches_df.shape)
 
-    final_niches_df, final_niches_df_long = make_long_table(
+    final_niches_df, final_niches_df_long = compute_niches_df_long(
         final_niches_df,
         adata,
         celltype_col=celltype_col,

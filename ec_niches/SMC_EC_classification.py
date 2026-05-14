@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+
+"""
+script to annotate EC and SMC subtypes
+"""
 import warnings
 warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -123,7 +127,7 @@ def save_umap(adata_sub, color_cols, output_path, title=None):
     plt.close(fig)
 
 
-def save_dotplots_one_page(adata_sub, marker_dict, groupby_cols, output_path):
+def save_dotplots(adata_sub, marker_dict, groupby_cols, output_path):
     ncols = 3
     nrows = math.ceil(len(groupby_cols) / ncols)
     panel_images = []
@@ -233,7 +237,7 @@ def main():
         os.path.join(fig_dir, "smc_thresholds_umap.pdf"),
     )
 
-    save_dotplots_one_page(
+    save_dotplots(
         adata_smc,
         smc_markers_filtered,
         smc_thr_cols,
@@ -267,7 +271,7 @@ def main():
         os.path.join(fig_dir, "ec_thresholds_umap.pdf"),
     )
 
-    save_dotplots_one_page(
+    save_dotplots(
         adata_ec,
         ec_markers_filtered,
         ec_thr_cols,

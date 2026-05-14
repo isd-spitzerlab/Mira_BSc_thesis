@@ -178,7 +178,7 @@ standardize_emm_ci <- function(emm_df) {
 }
 
 parse_contrast <- function(x) {
-  # emmeans::pairs() here yields contrasts like "aECs / capECs"
+  # emmeans::pairs() yields contrasts "aECs / capECs"
   s <- stringr::str_trim(as.character(x))
   parts <- stringr::str_split(s, "\\s*[/\\-\\u2013\\u2014]\\s*", n = 2)
 
@@ -393,9 +393,8 @@ if (nrow(filtered_out_df) > 0) {
   message("No subsets were filtered out before fitting.")
 }
 
-# ----------------------------
-# 4) COLLECT RESULTS + FDR
-# ----------------------------
+#results + FDR
+
 emm_all <- purrr::map_dfr(fits, function(x) {
   out <- x$res$emm
   out$brain_area <- x$brain_area
