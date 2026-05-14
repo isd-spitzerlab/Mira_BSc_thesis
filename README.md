@@ -97,7 +97,7 @@ conda activate glmm_env
 
 ## Analyses within the glmm_env environment
 
-Compute statistical analysis of baseline age to determine significant differences in cell type abundance between niches
+Compute statistical analysis of baseline age to determine significant differences in cell type abundance between niches and calculate mean mural cell numbers for each EC niche
 
 ```bash
 Rscript EC_niches_glmm.R --infile csv_with_niche_results --outdir path_to_out_dir
