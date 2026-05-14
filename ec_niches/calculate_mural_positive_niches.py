@@ -2,15 +2,6 @@
 
 """
 Calculates and plots the percentage of EC niches that are positive for SMCs and pericytes, as well as total number of EC niches
-
-Example:
-    python calculate_mural_positive_niches.py \
-        --anndata_file adata_integrated.h5ad.gz \
-        --brain_areas spatial_registration.csv \
-        --out results \
-        --plot_brain_areas HIP \
-        --radii 60,70,80,90,100 \
-        --mural_cell_types SMCs,Pericytes
 """
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning, module="xarray_schema")
